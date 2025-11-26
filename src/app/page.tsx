@@ -1,16 +1,4 @@
-export default function Home() {
-  return (
-    <div style={{ 
-      width: '100%', 
-      height: '100%',
-      minHeight: '100%'
-    }}>
-      {/* Conteúdo da página principal */}
-    </div>
-  );
-}
 "use client";
-
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
 
@@ -25,7 +13,7 @@ import PostCard from "./components/PostCard";
 // import Footer from '../../components/Footer';
 
 // --- Importações da Lógica de Dados ---
-import { Post, getAllPosts } from "./services/postService";
+import { Post, postService } from "./services/postService";
 
 // ----------------------------------------------------
 // Componente Principal da Home Page
@@ -45,7 +33,7 @@ const Home: React.FC = () => {
       setHasError(false); 
 
       try {
-        const data = await getAllPosts(1, 20);
+        const data = await postService.getAllPosts(1, 20);
         setPosts(data.data);
       } catch (error) {
         console.error("Falha ao carregar posts:", error);

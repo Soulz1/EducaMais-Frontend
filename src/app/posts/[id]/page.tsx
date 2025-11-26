@@ -9,7 +9,7 @@ import Head from "next/head";
 // import Footer from '../../components/Footer';
 
 // --- Importações da Lógica de Dados ---
-import { getPostById, Post } from "../../services/postService";
+import { postService, Post } from "../../services/postService";
 
 // ----------------------------------------------------
 // 1. Componente Principal da Página
@@ -38,7 +38,7 @@ export default function PostPage({
         setHasError(false);
 
         try {
-          const data = await getPostById(postId);
+          const data = await postService.getPostById(postId);
           setPost(data);
         } catch (error) {
           console.error(`Falha ao carregar o post ${postId}:`, error);

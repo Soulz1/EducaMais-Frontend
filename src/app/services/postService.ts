@@ -161,7 +161,7 @@ const searchPosts = async (term: string, page = 1, limit = 10): Promise<Paginate
 
 
 // Exporta todas as funções
-export {
+export const postService = {
   // Suas funções (Pacote 4)
   createPost,
   updatePost,
