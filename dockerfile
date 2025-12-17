@@ -1,15 +1,19 @@
-FROM --platform=linux/arm64 node:20 AS builder
+FROM node:20 AS builder
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm ci
+ENV NEXT_DISABLE_LIGHTNINGCSS=1
+
+COPY package.json ./
+
+RUN npm install
 
 COPY . .
 RUN npm run build
 
-
-FROM --platform=linux/arm64 node:20 AS production
+FROM node:20 AS production
 WORKDIR /app
+
+ENV NEXT_DISABLE_LIGHTNINGCSS=1
 
 COPY --from=builder /app/next.config.ts ./
 COPY --from=builder /app/public ./public
