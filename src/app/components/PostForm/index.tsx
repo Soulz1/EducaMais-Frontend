@@ -1,9 +1,14 @@
-// src/components/PostForm.tsx
+// src/app/components/PostForm/index.tsx
+
 "use client";
 import React, { useState, useEffect } from "react";
+import Button from "@/app/components/button";
+import Input from "@/app/components/input";
+import Label from "../label";
+import { Textarea } from "../textarea/Textarea";
 
 interface PostFormProps {
-  initialData?: { titulo: string; conteudo: string }; // Para edição
+  initialData?: { titulo: string; conteudo: string };
   onSubmit: (data: { titulo: string; conteudo: string }) => Promise<void>;
   isSubmitting: boolean;
 }
@@ -17,7 +22,6 @@ export default function PostForm({
   const [conteudo, setConteudo] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  // Preenche o form se for edição
   useEffect(() => {
     if (initialData) {
       setTitulo(initialData.titulo || "");
@@ -29,13 +33,14 @@ export default function PostForm({
     event.preventDefault();
     setError(null);
 
-    // Validação Simples
     if (!titulo.trim()) {
       setError("O título é obrigatório.");
       return;
     }
     if (!conteudo.trim() || conteudo.trim().length < 100) {
-      setError("O conteúdo é obrigatório e deve ter pelo menos 100 caracteres.");
+      setError(
+        "O conteúdo é obrigatório e deve ter pelo menos 100 caracteres."
+      );
       return;
     }
 
@@ -51,31 +56,64 @@ export default function PostForm({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {error && <p style={{ color: "red" }}>Erro: {error}</p>}
-      <div>
-        <label htmlFor="titulo">Título:</label>
-        <input
+    <form
+      onSubmit={handleSubmit}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "1.5rem",
+        maxWidth: "600px",
+        margin: "0 auto",
+      }}
+    >
+      {error && (
+        <div
+          style={{
+            padding: "0.75rem",
+            backgroundColor: "#fee2e2",
+            color: "#991b1b",
+            borderRadius: "0.375rem",
+            fontSize: "0.875rem",
+          }}
+        >
+          Erro: {error}
+        </div>
+      )}
+
+      {/* Campo Título */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+        <Label htmlFor="titulo">Título da Postagem</Label>
+        <Input
           id="titulo"
+          name="titulo"
           type="text"
+          placeholder="Digite um título chamativo..."
           value={titulo}
-          onChange={(e) => setTitulo(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setTitulo(e.target.value)
+          }
           disabled={isSubmitting}
         />
       </div>
-      <div>
-        <label htmlFor="conteudo">Conteúdo:</label>
-        <textarea
+
+      {/* Campo Conteúdo */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+        <Label htmlFor="conteudo">Conteúdo da Postagem</Label>
+        <Textarea
           id="conteudo"
+          name="conteudo"
+          placeholder="Escreva o conteúdo do post..."
           value={conteudo}
           onChange={(e) => setConteudo(e.target.value)}
           disabled={isSubmitting}
-          rows={10}
         />
       </div>
-      <button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "Salvando..." : "Salvar Post"}
-      </button>
+
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Salvando..." : "Salvar Post"}
+        </Button>
+      </div>
     </form>
   );
 }

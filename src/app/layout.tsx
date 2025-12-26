@@ -31,13 +31,27 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        cz-shortcut-listen="true"
+        suppressHydrationWarning={true} // Adicionei para evitar erro da extensão
       >
         <StyledComponentsRegistry>
           <StyledThemeProvider>
             <LayoutWrapper>
               <Header />
-              <MainContent>{children}</MainContent>
+              <MainContent>
+                {/* --- CONTEINER LIMITADOR (1200px) --- */}
+                <div
+                  style={{
+                    width: "80%",           // Ocupa 90% em telas menores
+                    maxWidth: "1200px",     // Trava em 1200px em telas grandes
+                    margin: "0 auto",       // Centraliza na tela
+                    padding: "2rem 0",      // Um respiro vertical
+                    minHeight: "80vh"       // Garante altura mínima
+                  }}
+                >
+                  {children}
+                </div>
+                {/* ------------------------------------ */}
+              </MainContent>
               <Footer />
             </LayoutWrapper>
           </StyledThemeProvider>

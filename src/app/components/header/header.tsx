@@ -36,10 +36,13 @@ const HeaderContent = styled.div`
   }
 `;
 
-const Logo = styled(Link)`
+// MUDANÇA 1: De styled(Link) para styled.span
+// Como ele vai ficar DENTRO de um Link, ele deve ser apenas um elemento visual
+const Logo = styled.span`
   color: #000000;
   text-decoration: none;
   flex-shrink: 0;
+  cursor: pointer;
 `;
 
 const Nav = styled.nav`
@@ -57,15 +60,9 @@ const Nav = styled.nav`
   }
 `;
 
-const NavLink = styled(Link)`
-  color: ${props => props.theme.colors.text.secondary};
-  text-decoration: none;
-  &:hover {
-    color: ${props => props.theme.colors.primary};
-  }
-`;
-
-const NavButton = styled.button`
+// MUDANÇA 2: De styled.button para styled.span
+// Botão dentro de Link é HTML inválido. Mudamos para span mantendo o estilo visual.
+const NavButton = styled.span`
   background: #F2994A;
   color: ${props => props.theme.colors.text.inverse};
   padding: 0.625rem 1.25rem;
@@ -75,6 +72,9 @@ const NavButton = styled.button`
   transition: background-color 0.2s;
   white-space: nowrap;
   flex-shrink: 0;
+  display: inline-flex; // Garante alinhamento correto
+  align-items: center;
+  justify-content: center;
   
   @media (max-width: 768px) {
     padding: 0.625rem 1.25rem;
@@ -89,7 +89,8 @@ const NavButton = styled.button`
   }
 `;
 
-const NewPostButton = styled(Link)`
+// MUDANÇA 3: De styled(Link) para styled.span, pelo mesmo motivo dos outros
+const NewPostButton = styled.span`
   background: ${props => props.theme.colors.primary};
   color: ${props => props.theme.colors.text.inverse};
   padding: 0.625rem 1.25rem;
@@ -130,10 +131,22 @@ const Header: React.FC = () => {
     <>
       <HeaderContainer>
         <HeaderContent>
-          <Logo href="/" className="text-2xl font-bold">EducaMais</Logo>
+          <Link href="/">
+            <Logo className="text-2xl font-bold">EducaMais</Logo>
+          </Link>
+
           <Nav>
-            <NewPostButton href="/nova-postagem" className="text-base font-medium md:text-[0.9375rem] sm:text-sm">+ Nova Postagem</NewPostButton>
-            <NavButton className="font-medium text-base md:text-[0.9375rem] sm:text-sm">Entrar</NavButton>
+            <Link href="/admin/create">
+              <NewPostButton className="text-base font-medium md:text-[0.9375rem] sm:text-sm">
+                + Nova Postagem
+              </NewPostButton>
+            </Link>
+
+            <Link href="/admin/signin">
+              <NavButton className="font-medium text-base md:text-[0.9375rem] sm:text-sm">
+                Entrar
+              </NavButton>
+            </Link>
           </Nav>
         </HeaderContent>
       </HeaderContainer>
