@@ -2,67 +2,79 @@ import React from "react";
 import Link from "next/link";
 import { Post } from "../services/postService";
 
-// ----------------------------------------------------
-// Interface das Props
-// O PostCard precisa receber o objeto Post completo
-// ----------------------------------------------------
 interface PostCardProps {
   post: Post;
+  isAdmin?: boolean;
+  onDelete?: (id: number) => void;
 }
 
-// ----------------------------------------------------
-// Componente PostCard
-// ----------------------------------------------------
-const PostCard: React.FC<PostCardProps> = ({ post }) => {
-  
+const PostCard: React.FC<PostCardProps> = ({
+  post,
+  isAdmin = false,
+  onDelete,
+}) => {
   const postUrl = `/posts/${post.id}`;
 
+  const getPreview = (text: string) => {
+    const words = text.split(/\s+/); // Divide por qualquer espaço em branco
+    if (words.length <= 10) return text;
+    
+    return words.slice(0, 10).join(" ") + "...";
+  };
+
   return (
-    <div
-      // Estilos temporários para visualização
-      style={{
-        border: "1px solid #ddd",
-        padding: "20px",
-        borderRadius: "5px",
-        backgroundColor: "#f9f9f9",
-        boxShadow: "2px 2px 5px rgba(0,0,0,0.05)",
-      }}
-    >
-      <Link href={postUrl} >
-        <h2
-          // Estilos temporários para indicar que é clicável
-          style={{
-            color: "#007bff",
-            cursor: "pointer",
-            marginBottom: "10px",
-            fontSize: "1.5em",
-          }}
-        >
-          {post.titulo}
-        </h2>
-      </Link>
+    <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      {/* Lado Esquerdo: Conteúdo do Post */}
+      <div className="flex-1 w-full">
+        <Link href={postUrl}>
+          <h2 className="text-xl font-bold text-gray-800 hover:text-indigo-600 transition-colors cursor-pointer">
+            {post.titulo}
+          </h2>
+        </Link>
 
-      <p style={{ color: "#555", marginBottom: "15px" }}>{post.conteudo}</p>
+        {/* Preview do conteúdo (limitado a 2 linhas para manter o card limpo) */}
+        {!isAdmin && (
+          <p className="text-gray-600 mt-2 line-clamp-2 text-sm">
+            {getPreview(post.conteudo)}
+          </p>
+        )}
 
-      <small style={{ display: "block", color: "#888" }}>
-        Autor: **{post.autorId}**
-      </small>
+        <div className="flex items-center gap-2 mt-4">
+          <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+            Autor: {post.autor?.name || "Desconhecido"}
+          </span>
+        </div>
+      </div>
 
-      <Link href={postUrl}>
-        <button
-          style={{
-            marginTop: "15px",
-            padding: "8px 15px",
-            backgroundColor: "#28a745",
-            color: "white",
-            border: "none",
-            borderRadius: "3px",
-            cursor: "pointer",
-          }}
-        >
-          Leia Mais
-        </button>
-      </Link>
+      {/* Lado Direito: Ações Condicionais */}
+      <div className="flex gap-3 shrink-0 w-full md:w-auto">
+        {isAdmin ? (
+          <>
+            {/* Botões para o Administrador */}
+            <Link
+              href={`/admin/edit/${post.id}`}
+              className="flex-1 text-center text-indigo-600 hover:bg-indigo-50 font-medium text-sm border border-indigo-200 px-4 py-2 rounded transition-all"
+            >
+              Editar
+            </Link>
+
+            <button
+              onClick={() => onDelete && onDelete(post.id)}
+              className="flex-1 text-center text-red-600 hover:bg-red-50 font-medium text-sm border border-red-200 px-4 py-2 rounded transition-all"
+            >
+              Excluir
+            </button>
+          </>
+        ) : (
+          /* Botão para o Usuário Comum */
+          <Link
+            href={postUrl}
+            className="w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm px-6 py-2 rounded shadow-sm transition-colors"
+          >
+            Leia Mais
+          </Link>
+        )}
+      </div>
     </div>
   );
 };
