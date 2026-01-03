@@ -1,21 +1,11 @@
 import React from 'react';
 
-// ----------------------------------------------------
-// Interface das Props
-// Define as propriedades que o componente receberá do 'index.tsx'
-// ----------------------------------------------------
 interface SearchBarProps {
-  // Valor atual do campo de busca
   value: string; 
-  // Função chamada quando o texto no input muda
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  // Função chamada quando o botão de busca é clicado (ou o formulário é submetido)
   onSearch: () => void; 
 }
 
-// ----------------------------------------------------
-// Componente SearchBar
-// ----------------------------------------------------
 const SearchBar: React.FC<SearchBarProps> = ({ value, onChange, onSearch }) => {
   
   const handleSubmit = (event: React.FormEvent) => {
@@ -24,27 +14,33 @@ const SearchBar: React.FC<SearchBarProps> = ({ value, onChange, onSearch }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px', padding: '10px', border: '1px solid #ccc' }}>
+    <form 
+      onSubmit={handleSubmit} 
+      className="flex gap-2 p-2 bg-white border border-gray-200 rounded-lg shadow-sm focus-within:ring-2 focus-within:ring-indigo-100 transition-all"
+    >
+      <div className="relative flex-grow">
+        {/* Ícone de lupa (Opcional, mas melhora a UI) */}
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+
+        <input
+          type="text"
+          placeholder="Buscar posts por título ou conteúdo..."
+          value={value}
+          onChange={onChange}
+          className="w-full pl-10 pr-4 py-2 text-gray-700 bg-transparent border-none focus:outline-none focus:ring-0 text-sm"
+        />
+      </div>
       
-      {/* Esqueleto do Input de Busca */}
-      <input
-        type="text"
-        placeholder="Buscar posts por título ou conteúdo..."
-        value={value}
-        onChange={onChange}
-        // Como o Pacote 1 (UI) ainda está em andamento, use estilos inline temporários:
-        style={{ flexGrow: 1, padding: '8px', border: '1px solid #ddd' }}
-      />
-      
-      {/* Esqueleto do Botão de Busca */}
       <button 
         type="submit" 
-        // Como o Pacote 1 (UI) ainda está em andamento, use estilos inline temporários:
-        style={{ padding: '8px 15px', backgroundColor: '#007bff', color: 'white', border: 'none', cursor: 'pointer' }}
+        className="bg-teal-600 hover:bg-teal-700 text-white font-medium text-sm px-6 py-2 rounded-md transition-colors shadow-sm"
       >
         Buscar
       </button>
-
     </form>
   );
 };

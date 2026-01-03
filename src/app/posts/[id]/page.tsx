@@ -2,41 +2,31 @@
 
 import React, { useState, useEffect, use } from "react";
 import Head from "next/head";
-
-// --- Importações de Componentes (Pacote 1) ---
-// Importe o Header/Footer do seu projeto
-// import Header from '../../components/Header';
-// import Footer from '../../components/Footer';
+import Link from "next/link"; // Adicionado para permitir voltar
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 // --- Importações da Lógica de Dados ---
 import { postService, Post } from "../../services/postService";
 
-// ----------------------------------------------------
-// 1. Componente Principal da Página
-// ----------------------------------------------------
 export default function PostPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const { id } = use(params);
 
-  const { id } = use(params)
+  // Mantendo seu Mock para testes locais
+  const [post, setPost] = useState<Post | null>();
 
-  const [post, setPost] = useState<Post | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  // ----------------------------------------------------
-  // 2. Lógica de Busca de Dados
-  // ----------------------------------------------------
   useEffect(() => {
     if (id && typeof id === "string") {
-      const postId = parseInt(id, 10); 
-
+      const postId = parseInt(id, 10);
       const fetchPost = async () => {
-        setIsLoading(true);
         setHasError(false);
-
         try {
           const data = await postService.getPostById(postId);
           setPost(data);
@@ -47,67 +37,103 @@ export default function PostPage({
           setIsLoading(false);
         }
       };
-
       fetchPost();
     }
-  }, [id]); 
+  }, [id]);
 
   // ----------------------------------------------------
-  // 3. Renderização Condicional
+  // Renderização: Loading
   // ----------------------------------------------------
-
-  // Exibição de Carregamento
   if (isLoading) {
     return (
-      <div style={{ padding: "20px" }}>
-        {/* <Header /> */}
-        <p>Carregando conteúdo do post...</p>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="flex flex-col items-center gap-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#62A59D]"></div>
+          <p className="text-gray-500 font-medium">Carregando conteúdo...</p>
+        </div>
       </div>
     );
   }
 
-  // Exibição de Erro ou Post Não Encontrado
+  // ----------------------------------------------------
+  // Renderização: Erro
+  // ----------------------------------------------------
   if (hasError || !post) {
     return (
-      <div style={{ padding: "20px" }}>
-        {/* <Header /> */}
-        <h1 style={{ color: "red" }}>Post Não Encontrado</h1>
-        <p>
-          Parece que o conteúdo que você procura não existe ou houve um erro de
-          conexão.
-        </p>
+      <div className="min-h-screen flex items-center justify-center px-4 bg-gray-50">
+        <div className="text-center p-10 bg-white rounded-xl shadow-sm border border-gray-200 max-w-md">
+          <h1 className="text-2xl font-bold text-red-600 mb-4">Post Não Encontrado</h1>
+          <p className="text-gray-600 mb-6">
+            Parece que o conteúdo que você procura não existe ou houve um erro de conexão.
+          </p>
+          <Link href="/" className="text-[#62A59D] font-semibold hover:underline">
+            ← Voltar para a listagem
+          </Link>
+        </div>
       </div>
     );
   }
 
-  // Exibição do Conteúdo 
+  // ----------------------------------------------------
+  // Renderização: Conteúdo Principal
+  // ----------------------------------------------------
   return (
-    <div>
+    <div className="bg-gray-50 min-h-screen">
       <Head>
         <title>{post.titulo} | EducaMais</title>
       </Head>
 
-      {/* <Header /> */}
+      <main className="max-w-3xl mx-auto px-6 py-12">
+        {/* Botão Voltar */}
+        <Link 
+          href="/" 
+          className="inline-flex items-center text-sm text-gray-500 hover:text-[#62A59D] mb-8 transition-colors"
+        >
+          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Voltar para posts
+        </Link>
 
-      <main style={{ padding: "40px", maxWidth: "800px", margin: "0 auto" }}>
+        {/* Cabeçalho do Post */}
+        <header className="mb-8">
+          <h1 className="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight leading-tight">
+            {post.titulo}
+          </h1>
+          
+          <div className="flex items-center gap-3 text-sm text-gray-500 border-y border-gray-200 py-4">
+            <div className="flex items-center">
+              <span className="font-semibold text-[#62A59D] uppercase tracking-wide mr-1">
+                {post.autor?.name || "Autor Desconhecido"}
+              </span>
+            </div>
+            <span className="text-gray-300">•</span>
+            <time dateTime={post.createdAt}>
+              Publicado em: {new Date(post.createdAt).toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric'
+              })}
+            </time>
+          </div>
+        </header>
 
-        <h1>{post.titulo}</h1>
+        {/* Corpo do Post */}
+        <article className="prose prose-stone prose-indigo lg:prose-lg max-w-none">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+          >
+            {post.conteudo}
+          </ReactMarkdown>
+        </article>
 
-        <div style={{ margin: "10px 0 30px" }}>
-          <small>
-            Autor: **{post.autor?.name || "Autor Desconhecido"}** | Publicado
-            em: {new Date(post.createdAt).toLocaleDateString()}
-          </small>
-        </div>
-
-        <hr />
-
-        <p style={{ lineHeight: 1.6, whiteSpace: "pre-wrap" }}>
-          {post.conteudo}
-        </p>
+        {/* Rodapé do Post (Opcional) */}
+        <footer className="mt-12 pt-8 border-t border-gray-200">
+          <p className="text-xs text-gray-400">
+            Última atualização: {new Date(post.atualizacao).toLocaleString('pt-BR')}
+          </p>
+        </footer>
       </main>
-
-      {/* <Footer /> */}
     </div>
   );
 }

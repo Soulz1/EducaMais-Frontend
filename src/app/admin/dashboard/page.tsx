@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
+import PostCard from "@/app/components/PostCard";
 import { postService } from "@/app/services/postService";
 import { authClient } from "@/app/services/authClient";
 
@@ -101,7 +101,11 @@ export default function DashboardPage() {
           {/* Se o user existir, mostramos. Se não tiver nome, usamos o email */}
           {sessionUser && (
             <p className="text-gray-600 mt-1">
-              Olá, <span className="font-semibold">{sessionUser.name || sessionUser.email}</span>!
+              Olá,{" "}
+              <span className="font-semibold">
+                {sessionUser.name || sessionUser.email}
+              </span>
+              !
             </p>
           )}
         </div>
@@ -115,35 +119,12 @@ export default function DashboardPage() {
       ) : (
         <div className="grid gap-4">
           {posts.map((post: Post) => (
-            <div
-              key={post.id}
-              className="bg-white border border-gray-200 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow flex justify-between items-center"
-            >
-              <div>
-                <h2 className="text-xl font-semibold text-gray-800">{post.titulo}</h2>
-                <p className="text-sm text-gray-500 mt-1">
-                  Autor: {post.autor?.name || "Desconhecido"}
-                </p>
-              </div>
-
-              <div className="flex gap-3">
-                {/* Botão Editar */}
-                <Link
-                  href={`/admin/edit/${post.id}`}
-                  className="text-indigo-600 hover:text-indigo-800 font-medium text-sm border border-indigo-200 hover:border-indigo-400 px-3 py-1 rounded"
-                >
-                  Editar
-                </Link>
-
-                {/* Botão Excluir */}
-                <button
-                  onClick={() => handleDelete(post.id)}
-                  className="text-red-600 hover:text-red-800 font-medium text-sm border border-red-200 hover:border-red-400 px-3 py-1 rounded"
-                >
-                  Excluir
-                </button>
-              </div>
-            </div>
+            <PostCard
+              isAdmin
+              key={`${post.id}`}
+              post={post}
+              onDelete={() => handleDelete(post.id)}
+            />
           ))}
         </div>
       )}
