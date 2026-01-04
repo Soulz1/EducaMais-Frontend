@@ -25,10 +25,23 @@ Repositório oficial do front-end do projeto EducaMais, uma plataforma colaborat
 - [Docker Desktop](https://www.docker.com/) (opcional)
 - [Git](https://git-scm.com/)
 
+## Iniciando o projeto
+
+Acesse o diretório do projeto através do comando:
+
+```bash
+cd nomedoprojeto
+```
+
 ## Configuração de Ambiente
 
 Crie `.env` baseado em `.env.example`:
 - `NEXT_PUBLIC_API_URL=http://localhost:3333`
+
+# Comando rápido para criar o arquivo .env
+```bash
+cp .env.example .env
+```
 
 Para cookies com credenciais, o backend deve configurar CORS com `origin` explícito e `credentials: true`.
 
