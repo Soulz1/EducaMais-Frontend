@@ -35,41 +35,42 @@ Para cookies com credenciais, o backend deve configurar CORS com `origin` explí
 ## Instalação e Execução
 
 - Desenvolvimento: 
+
+Baixa e instala todas as bibliotecas e dependências listadas no projeto, criando a pasta node_modules.
 ```bash
 npm install
 ``` 
-Baixa e instala todas as bibliotecas e dependências listadas no projeto, criando a pasta node_modules.
-
+Inicia o servidor de desenvolvimento com Fast Refresh. O projeto fica disponível em http://localhost:3000 e as alterações no código são refletidas em tempo real.
 ```bash
 npm run dev (http://localhost:3000)
 ```
-Inicia o servidor de desenvolvimento com Fast Refresh. O projeto fica disponível em http://localhost:3000 e as alterações no código são refletidas em tempo real.
 
 - Build: 
+Compila e otimiza o código para produção, gerando uma versão de alta performance na pasta .next.
 ```bash
 npm run build
 ```
-Compila e otimiza o código para produção, gerando uma versão de alta performance na pasta .next.
 
 - Produção local:
+Inicia o servidor de produção utilizando os arquivos gerados pelo comando de build (ideal para testar o comportamento final antes do deploy).
 ```bash
 npm start
 ```
-Inicia o servidor de produção utilizando os arquivos gerados pelo comando de build (ideal para testar o comportamento final antes do deploy).
+
 
 ## Docker
 
 - Dev (hot reload):
+Sobe o container de desenvolvimento utilizando um arquivo de configuração específico (local.yml) que permite ver as alterações de código sem precisar reiniciar o container.
 ```bash
 docker compose -f docker-compose.local.yml up --build -d
 ```
-Sobe o container de desenvolvimento utilizando um arquivo de configuração específico (local.yml) que permite ver as alterações de código sem precisar reiniciar o container.
 
-- Produção : 
+- Produção:
+Cria a imagem otimizada de produção e sobe o serviço em modo detached (segundo plano), simulando o ambiente real de deploy.
 ```bash
 docker compose up --build -d
 ```
-Cria a imagem otimizada de produção e sobe o serviço em modo detached (segundo plano), simulando o ambiente real de deploy.
 
 ## Integração com Backend
 
