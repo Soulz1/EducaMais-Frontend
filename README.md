@@ -101,9 +101,9 @@ docker compose up --build -d
 Endpoints:
 - GET `/posts?page=&limit=`
 - GET `/posts/:id`
-- POST `/posts` (autenticado)
-- PUT `/posts/:id` (autenticado)
-- DELETE `/posts/:id` (autenticado)
+- POST `admin/create` (autenticado)
+- PUT `admin/edit/:id` (autenticado)
+- DELETE `admin/delete` (autenticado)
 
 Tipos:
 - `Author.id`: string
