@@ -21,9 +21,9 @@ Tecnologias:
 
 ## Pré-requisitos
 
-- [Node.js] 20+ (https://nodejs.org/en)
-- Docker Desktop (opcional)
-- Git
+- [Node.js 20+](https://nodejs.org/en)
+- [Docker Desktop](https://www.docker.com/) (opcional)
+- [Git](https://git-scm.com/)
 
 ## Configuração de Ambiente
 
