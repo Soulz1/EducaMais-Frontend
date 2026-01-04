@@ -38,16 +38,20 @@ Para cookies com credenciais, o backend deve configurar CORS com `origin` explí
 ```bash
 npm install
 ``` 
-
 e 
-
 ```bash
 npm run dev (http://localhost:3000)
 ```
 
 
-- Build: `npm run build`
-- Produção local: `npm start`
+- Build: 
+```bash
+npm run build
+```
+- Produção local:
+  ```bash
+  npm start
+  ```
 
 ## Docker
 
