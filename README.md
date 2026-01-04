@@ -45,7 +45,8 @@ Inicia o servidor de desenvolvimento com Fast Refresh. O projeto fica disponíve
 npm run dev (http://localhost:3000)
 ```
 
-- Build: 
+- Build:
+
 Compila e otimiza o código para produção, gerando uma versão de alta performance na pasta .next.
 ```bash
 npm run build
