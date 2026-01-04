@@ -38,7 +38,8 @@ cd nomedoprojeto
 Crie `.env` baseado em `.env.example`:
 - `NEXT_PUBLIC_API_URL=http://localhost:3333`
 
-# Comando rápido para criar o arquivo .env
+Comando para criar o arquivo .env
+
 ```bash
 cp .env.example .env
 ```
