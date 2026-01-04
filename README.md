@@ -1,8 +1,8 @@
 # EducaMais-Frontend
 
-Repositório oficial do front-end do projeto EducaMais, uma plataforma de blogging para docentes e alunos, construída com Next.js (App Router), integração com Better Auth e consumo da API do backend via Axios.
+Repositório oficial do front-end do projeto EducaMais, uma plataforma colaborativa de educação voltada para a troca de conhecimentos entre docentes e alunos, construída com Next.js (App Router), integração com Better Auth e consumo da API do backend via Axios.
 
-Backend do projeto: https://github.com/fiap-time-4/EducaMais-Backend
+Backend do projeto: (https://github.com/fiap-time-4/EducaMais-Backend)
 
 ## Arquitetura e Tecnologias
 
@@ -38,7 +38,6 @@ Para cookies com credenciais, o backend deve configurar CORS com `origin` explí
 ```bash
 npm install
 ``` 
-e 
 ```bash
 npm run dev (http://localhost:3000)
 ```
@@ -49,14 +48,20 @@ npm run dev (http://localhost:3000)
 npm run build
 ```
 - Produção local:
-  ```bash
-  npm start
-  ```
+```bash
+npm start
+```
 
 ## Docker
 
-- Dev (hot reload): `docker compose -f docker-compose.local.yml up --build -d`
-- Prod: `docker compose up --build -d`
+- Dev (hot reload):
+```bash
+docker compose -f docker-compose.local.yml up --build -d
+```
+- Produção : 
+```bash
+docker compose up --build -d
+```
 
 ## Integração com Backend
 
