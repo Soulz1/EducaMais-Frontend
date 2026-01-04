@@ -53,6 +53,7 @@ npm run build
 ```
 
 - Produção local:
+
 Inicia o servidor de produção utilizando os arquivos gerados pelo comando de build (ideal para testar o comportamento final antes do deploy).
 ```bash
 npm start
